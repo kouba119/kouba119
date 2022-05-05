@@ -1,0 +1,119 @@
+-- Database generated with pgModeler (PostgreSQL Database Modeler).
+-- pgModeler  version: 0.9.3
+-- PostgreSQL version: 13.0
+-- Project Site: pgmodeler.io
+-- Model Author: ---
+
+-- Database creation must be performed outside a multi lined SQL file. 
+-- These commands were put in this file only as a convenience.
+-- 
+-- object: new_database | type: DATABASE --
+-- DROP DATABASE IF EXISTS new_database;
+CREATE DATABASE new_database;
+-- ddl-end --
+
+
+-- object: public.personal_information | type: TABLE --
+-- DROP TABLE IF EXISTS public.personal_information CASCADE;
+CREATE TABLE public.personal_information (
+	first_name varchar(30),
+	last_name varchar(30),
+	birth_date varchar(10),
+	birth_place varchar(30),
+	birth_number varchar(10) NOT NULL,
+	CONSTRAINT personal_information_pk PRIMARY KEY (birth_number)
+
+);
+-- ddl-end --
+ALTER TABLE public.personal_information OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.investigation | type: TABLE --
+-- DROP TABLE IF EXISTS public.investigation CASCADE;
+CREATE TABLE public.investigation (
+	investigation_reason varchar(100),
+	investigation_area varchar(20),
+	courthouse_name varchar(40),
+	detective varchar(50),
+	birth_number_personal_information varchar(10)
+);
+-- ddl-end --
+ALTER TABLE public.investigation OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.jail | type: TABLE --
+-- DROP TABLE IF EXISTS public.jail CASCADE;
+CREATE TABLE public.jail (
+	prisoner_number varchar(10) NOT NULL,
+	imprisonment_place varchar(40),
+	penalty_value varchar(20),
+	security_level varchar(20),
+	birth_number_personal_information varchar(10),
+	CONSTRAINT jail_pk PRIMARY KEY (prisoner_number)
+
+);
+-- ddl-end --
+ALTER TABLE public.jail OWNER TO postgres;
+-- ddl-end --
+
+-- object: personal_information_fk | type: CONSTRAINT --
+-- ALTER TABLE public.jail DROP CONSTRAINT IF EXISTS personal_information_fk CASCADE;
+ALTER TABLE public.jail ADD CONSTRAINT personal_information_fk FOREIGN KEY (birth_number_personal_information)
+REFERENCES public.personal_information (birth_number) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: jail_uq | type: CONSTRAINT --
+-- ALTER TABLE public.jail DROP CONSTRAINT IF EXISTS jail_uq CASCADE;
+ALTER TABLE public.jail ADD CONSTRAINT jail_uq UNIQUE (birth_number_personal_information);
+-- ddl-end --
+
+-- object: personal_information_fk | type: CONSTRAINT --
+-- ALTER TABLE public.investigation DROP CONSTRAINT IF EXISTS personal_information_fk CASCADE;
+ALTER TABLE public.investigation ADD CONSTRAINT personal_information_fk FOREIGN KEY (birth_number_personal_information)
+REFERENCES public.personal_information (birth_number) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: investigation_uq | type: CONSTRAINT --
+-- ALTER TABLE public.investigation DROP CONSTRAINT IF EXISTS investigation_uq CASCADE;
+ALTER TABLE public.investigation ADD CONSTRAINT investigation_uq UNIQUE (birth_number_personal_information);
+-- ddl-end --
+
+-- object: public.prisoner_information | type: TABLE --
+-- DROP TABLE IF EXISTS public.prisoner_information CASCADE;
+CREATE TABLE public.prisoner_information (
+	imprisonment_date varchar(10),
+	court_date varchar(10),
+	prisoner_number_jail varchar(10),
+	birth_number_personal_information varchar(10)
+);
+-- ddl-end --
+ALTER TABLE public.prisoner_information OWNER TO postgres;
+-- ddl-end --
+
+-- object: jail_fk | type: CONSTRAINT --
+-- ALTER TABLE public.prisoner_information DROP CONSTRAINT IF EXISTS jail_fk CASCADE;
+ALTER TABLE public.prisoner_information ADD CONSTRAINT jail_fk FOREIGN KEY (prisoner_number_jail)
+REFERENCES public.jail (prisoner_number) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: prisoner_information_uq | type: CONSTRAINT --
+-- ALTER TABLE public.prisoner_information DROP CONSTRAINT IF EXISTS prisoner_information_uq CASCADE;
+ALTER TABLE public.prisoner_information ADD CONSTRAINT prisoner_information_uq UNIQUE (prisoner_number_jail);
+-- ddl-end --
+
+-- object: personal_information_fk | type: CONSTRAINT --
+-- ALTER TABLE public.prisoner_information DROP CONSTRAINT IF EXISTS personal_information_fk CASCADE;
+ALTER TABLE public.prisoner_information ADD CONSTRAINT personal_information_fk FOREIGN KEY (birth_number_personal_information)
+REFERENCES public.personal_information (birth_number) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: prisoner_information_uq1 | type: CONSTRAINT --
+-- ALTER TABLE public.prisoner_information DROP CONSTRAINT IF EXISTS prisoner_information_uq1 CASCADE;
+ALTER TABLE public.prisoner_information ADD CONSTRAINT prisoner_information_uq1 UNIQUE (birth_number_personal_information);
+-- ddl-end --
+
+
