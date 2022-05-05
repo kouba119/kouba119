@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \renewcommand{\abstractname}{Abstrakt}
 \renewcommand{\contentsname}{Obsah}
+\usepackage{graphicx}
 
 \title{Databáze trestně stíhaných osob}
 \author{KOUBA Dominik, VAGNER Jakub, EVTEEV Andrei}
@@ -40,6 +41,7 @@ Databáze je vytvořena na jazyce MySQL a využívá veškeré technologické vl
 \item Microsoft Edge - EULA (End User License Agreement)
 \item Overleaf - GNU Affero General Public License
 \item MySQL - GNU GPL (General Public License)
+\item pgModeler - 	PostgreSQL Licence 
 
 
 \end{itemize}
@@ -49,6 +51,7 @@ Databáze je vytvořena na jazyce MySQL a využívá veškeré technologické vl
 \item Microsoft Edge
 \item Overleaf
 \item MySQL
+\item pgModeler
 
 
 \end{itemize}
@@ -59,13 +62,61 @@ Databáze je vytvořena na jazyce MySQL a využívá veškeré technologické vl
 \newpage
 \section{Databázová struktura}
 \subsection{ER diagram}
-\subsection{Tabulka XXX}
+\begin{center}
+    \includegraphics[trim = 110 0 10 0, width = 15cm]{databaze.jpg}
+\end{center}
+\newpage
+\subsection{Tabulka OSOBNÍ INFORMACE}
 \subsubsection{Struktura}
+\begin{itemize}
+\item Jméno = first$\_$name
+\item Příjmení = last$\_$name
+\item Datum narození = birth$\_$date
+\item Rodné číslo = birth$\_$number
+\end{itemize}
 \subsubsection{Provázání tabulky}
-\subsection{Tabulka XXX}
+\begin{itemize}
+\item Propojení tabulky personal information s jail vztahem 1 - 1
+\item Propojení tabulky personal information s 
+
+      prisoner information vztahem 1 - 1
+\end{itemize}
+\subsection{Tabulka VYŠETŘOVÁNÍ}
 \subsubsection{Struktura}
+\begin{itemize}
+\item Důvod pátrání = investigation$\_$reason
+\item Obvod pátrání = investigation$\_$area
+\item Jméno soudu = courthouse$\_$name
+\item Jméno vyštřovatele = detective
+\end{itemize}
 \subsubsection{Provázání tabulky}
-\subsection{Tabulka XXX}
+\begin{itemize}
+\item Propojení tabulky vyšetřování s personal information vztahem 1 - 1
+\end{itemize}
+\subsection{Tabulka TREST}
 \subsubsection{Struktura}
+\begin{itemize}
+\item Číslo vězně = prisoner$\_$number
+\item Jméno věznice = imprisonment$\_$place
+\item Výše trestu = penalty$\_$value
+\item Stupeň ochrany = security$\_$level
+\end{itemize}
 \subsubsection{Provázání tabulky}
+\begin{itemize}
+\item Propojení tabulky jail s personal information vztahem 1 - 1
+\item Propojení tabulky jail s priaoner information vztahem 1 - 1
+\end{itemize}
+\subsection{Tabulka VĚZEŇSKÉ INFORMACE}
+\subsubsection{Struktura}
+\begin{itemize}
+\item Datum uvěznění = imprisonment$\_$date
+\item Datum soudu = court$\_$date
+\end{itemize}
+\subsubsection{Provázání tabulky}
+\begin{itemize}
+\item Propojení tabulky prisoner information s 
+
+personal information vztahem 1 - 1
+\item Propojení tabulky prisoner information s jail vztahem 1 - 1
+\end{itemize}
 \end{document}
